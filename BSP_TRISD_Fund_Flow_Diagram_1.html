@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TrustTrade Fund Flow Diagram - BSP TRISD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        /* Main Flow Diagram */
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 15px;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+        }
+        
+        .flow-step {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .flow-step::after {
+            content: '→';
+            position: absolute;
+            right: -22px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 32px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .flow-step:last-child::after {
+            content: '';
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .step-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .step-desc {
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        /* Account Structure */
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .account-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .account-card.primary {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        }
+        
+        .account-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .account-icon {
+            width: 30px;
+            height: 30px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .account-details {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .account-details li {
+            margin-left: 20px;
+            margin-bottom: 5px;
+        }
+        
+        /* Trust Account Breakdown */
+        .trust-breakdown {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 30px;
+            color: white;
+            margin: 30px 0;
+        }
+        
+        .trust-breakdown h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .breakdown-section {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .breakdown-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 8px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .breakdown-total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid rgba(255,255,255,0.5);
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        /* Transaction Flow Detail */
+        .transaction-timeline {
+            position: relative;
+            padding: 30px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            min-width: 60px;
+            height: 60px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline-item:not(:last-child) .timeline-marker::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 60px;
+            background: linear-gradient(180deg, #3498db 0%, #e0e6ed 100%);
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .timeline-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        
+        /* Reconciliation Process */
+        .reconciliation-box {
+            background: #f8f9fa;
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .reconciliation-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .recon-step {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e6ed;
+        }
+        
+        .recon-step-num {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .recon-step-text {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        /* Key Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Legend */
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>AI TrustTrade Fund Flow Diagram</h1>
+            <p>Comprehensive Money Movement and Account Structure | BSP TRISD Technical Review</p>
+            <p style="margin-top: 10px; color: #3498db; font-weight: bold;">NS Solution Corp | November 2025</p>
+        </div>
+
+        <!-- Overview Flow -->
+        <div class="section">
+            <div class="section-title">1. High-Level Fund Flow Overview</div>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">INFLOW</div>
+                    <div class="step-desc">Consumer pays via GCash, PayMaya, card, or bank transfer → Funds enter platform wallet</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">ESCROW</div>
+                    <div class="step-desc">Payment locked in Trust Account escrow sub-pool → Protected until service completion</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">VERIFICATION</div>
+                    <div class="step-desc">Service completed → Consumer approves OR 48hr auto-release → AI verification checks</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">SETTLEMENT</div>
+                    <div class="step-desc">Funds released to provider wallet → Available for withdrawal or reuse</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">OUTFLOW</div>
+                    <div class="step-desc">Provider withdraws to bank, GCash, PayMaya, or cash pickup → Exit from platform</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Structure -->
+        <div class="section">
+            <div class="section-title">2. Three-Account Structure (BSP Compliance)</div>
+            <div class="account-grid">
+                <div class="account-card">
+                    <div class="account-title">
+                        <div class="account-icon">1</div>
+                        Operating Account
+                    </div>
+                    <div class="account-details">
+                        <strong>Bank:</strong> BDO Business Account<br>
+                        <strong>Purpose:</strong> Platform operations<br><br>
+                        <strong>Contains:</strong>
+                        <ul>
+                            <li>Platform revenue (fees)</li>
+                            <li>Operating expenses</li>
+                            <li>Working capital</li>
+                        </ul>
+                        <br>
+                        <strong>User Access:</strong> ❌ None<br>
+                        <strong>Typical Balance:</strong> ₱5-10M
+                    </div>
+                </div>
+
+                <div class="account-card primary">
+                    <div class="account-title">
+                        <div class="account-icon">2</div>
+                        Trust Account ⭐
+                    </div>
+                    <div class="account-details">
+                        <strong>Bank:</strong> BPI Trust Banking<br>
+                        <strong>Purpose:</strong> User fund protection<br><br>
+                        <strong>Contains:</strong>
+                        <ul>
+                            <li>ALL user wallet balances</li>
+                            <li>ALL active escrows</li>
+                            <li>Reserve buffers</li>
+                        </ul>
+                        <br>
+                        <strong>User Access:</strong> ✅ Protected<br>
+                        <strong>Typical Balance:</strong> ₱40-50M<br>
+                        <strong>Special Status:</strong> Legally segregated, cannot be used for platform operations
+                    </div>
+                </div>
+
+                <div class="account-card">
+                    <div class="account-title">
+                        <div class="account-icon">3</div>
+                        Settlement Account
+                    </div>
+                    <div class="account-details">
+                        <strong>Bank:</strong> UnionBank<br>
+                        <strong>Purpose:</strong> Provider payouts<br><br>
+                        <strong>Contains:</strong>
+                        <ul>
+                            <li>Next-day settlements</li>
+                            <li>Batch processing funds</li>
+                            <li>Withdrawal queue</li>
+                        </ul>
+                        <br>
+                        <strong>User Access:</strong> ✅ Outbound<br>
+                        <strong>Typical Balance:</strong> ₱2-5M<br>
+                        <strong>Replenishment:</strong> Daily from Trust Account
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Account Breakdown -->
+        <div class="section">
+            <div class="section-title">3. Trust Account Internal Structure</div>
+            <div class="trust-breakdown">
+                <h3>BPI Trust Account Composition (₱48M Example)</h3>
+                <div class="breakdown-grid">
+                    <div class="breakdown-section">
+                        <div class="breakdown-title">Escrow Sub-Pool</div>
+                        <div class="breakdown-item">
+                            <span>Active Escrows:</span>
+                            <span>₱5,000,000</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Disputed Escrows (frozen):</span>
+                            <span>₱500,000</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Reserve Buffer (10%):</span>
+                            <span>₱500,000</span>
+                        </div>
+                        <div class="breakdown-total">
+                            <div class="breakdown-item">
+                                <span>Subtotal:</span>
+                                <span>₱6,000,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-section">
+                        <div class="breakdown-title">Wallet Sub-Pool</div>
+                        <div class="breakdown-item">
+                            <span>User Wallet Balances:</span>
+                            <span>₱38,000,000</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Float Reserve (10%):</span>
+                            <span>₱2,000,000</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Insurance Reserve:</span>
+                            <span>₱2,000,000</span>
+                        </div>
+                        <div class="breakdown-total">
+                            <div class="breakdown-item">
+                                <span>Subtotal:</span>
+                                <span>₱42,000,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px; font-size: 24px; font-weight: bold; padding-top: 20px; border-top: 3px solid rgba(255,255,255,0.5);">
+                    TOTAL TRUST ACCOUNT: ₱48,000,000
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Transaction Flow -->
+        <div class="section">
+            <div class="section-title">4. Detailed Transaction Flow (Use Case: ₱1,500 Service)</div>
+            <div class="transaction-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Consumer Booking & Payment</div>
+                        <div class="timeline-desc">
+                            <strong>Action:</strong> Maria books Juan for aircon cleaning (₱1,500)<br>
+                            <strong>Wallet Status:</strong> Maria has ₱500 → Needs ₱1,000 top-up<br>
+                            <strong>Top-up Method:</strong> GCash transfer (₱1,000)<br>
+                            <strong>Platform Fee:</strong> ₱30 (2% consumer fee)<br>
+                            <strong>Total Deducted:</strong> ₱1,530 from wallet
+                        </div>
+                        <div class="timeline-highlight">
+                            💰 <strong>Fund Movement:</strong> GCash → Platform Trust Account (Wallet Sub-Pool) → Escrow Sub-Pool (₱1,530)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Escrow Lock</div>
+                        <div class="timeline-desc">
+                            <strong>Status Change:</strong> PENDING → IN_ESCROW<br>
+                            <strong>Location:</strong> Trust Account Escrow Sub-Pool<br>
+                            <strong>Access:</strong> ❌ Maria cannot cancel, ❌ Juan cannot access<br>
+                            <strong>Duration:</strong> Until service completion + verification<br>
+                            <strong>Protection:</strong> Both parties protected by escrow mechanism
+                        </div>
+                        <div class="timeline-highlight">
+                            🔒 <strong>Security:</strong> Funds frozen in BSP-compliant trust account, legally segregated from platform operations
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Service Delivery</div>
+                        <div class="timeline-desc">
+                            <strong>Action:</strong> Juan arrives on time, completes aircon cleaning<br>
+                            <strong>In-App Action:</strong> Juan marks job as "Completed"<br>
+                            <strong>Photo Upload:</strong> Before/after photos (optional but encouraged)<br>
+                            <strong>GPS Verification:</strong> System confirms Juan was at service location<br>
+                            <strong>Notification:</strong> Maria receives push notification to review
+                        </div>
+                        <div class="timeline-highlight">
+                            📸 <strong>AI Verification:</strong> Computer vision checks photo quality, GPS confirms location match
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Consumer Approval / Auto-Release</div>
+                        <div class="timeline-desc">
+                            <strong>Option A:</strong> Maria approves immediately → Instant release<br>
+                            <strong>Option B:</strong> 48 hours pass with no dispute → Auto-release<br>
+                            <strong>Option C:</strong> Dispute filed → Funds stay frozen, mediation begins<br>
+                            <strong>Rating:</strong> Maria gives 5 stars, writes review<br>
+                            <strong>Trust Score Update:</strong> Juan +8 points, Maria +2 points
+                        </div>
+                        <div class="timeline-highlight">
+                            ⏱️ <strong>Auto-Release Timer:</strong> 85% of transactions auto-release (no action needed)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">5</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Fund Release to Provider</div>
+                        <div class="timeline-desc">
+                            <strong>Gross Amount:</strong> ₱1,500<br>
+                            <strong>Platform Commission (8%):</strong> -₱120<br>
+                            <strong>Net to Juan:</strong> ₱1,380<br>
+                            <strong>Destination:</strong> Juan's platform wallet<br>
+                            <strong>Status Change:</strong> IN_ESCROW → COMPLETED
+                        </div>
+                        <div class="timeline-highlight">
+                            💸 <strong>Fund Movement:</strong> Trust Account Escrow → Trust Account Wallet (Juan's balance)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker">6</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Provider Withdrawal</div>
+                        <div class="timeline-desc">
+                            <strong>Juan's Choice:</strong> Instant withdrawal to GCash<br>
+                            <strong>Withdrawal Amount:</strong> ₱1,380<br>
+                            <strong>Withdrawal Fee (2%):</strong> ₱28<br>
+                            <strong>Net Received:</strong> ₱1,352 to GCash<br>
+                            <strong>Processing Time:</strong> Instant (within 5 minutes)<br>
+                            <strong>Alternative:</strong> Free bank transfer (1-3 business days)
+                        </div>
+                        <div class="timeline-highlight">
+                            🏦 <strong>Fund Movement:</strong> Trust Account → Settlement Account → GCash (final exit)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Reconciliation -->
+        <div class="section">
+            <div class="section-title">5. Daily Reconciliation Process</div>
+            <div class="reconciliation-box">
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">Morning Reconciliation (9:00 AM Daily)</h3>
+                <div class="reconciliation-steps">
+                    <div class="recon-step">
+                        <div class="recon-step-num">1</div>
+                        <div class="recon-step-text">
+                            <strong>Calculate Expected</strong><br>
+                            Previous balance + Inflows - Outflows = Expected balance
+                        </div>
+                    </div>
+                    <div class="recon-step">
+                        <div class="recon-step-num">2</div>
+                        <div class="recon-step-text">
+                            <strong>Query Bank</strong><br>
+                            API call to BPI for actual trust account balance
+                        </div>
+                    </div>
+                    <div class="recon-step">
+                        <div class="recon-step-num">3</div>
+                        <div class="recon-step-text">
+                            <strong>Compare</strong><br>
+                            Expected vs. Actual<br>
+                            (Tolerance: ±₱1,000)
+                        </div>
+                    </div>
+                    <div class="recon-step">
+                        <div class="recon-step-num">4</div>
+                        <div class="recon-step-text">
+                            <strong>Resolve/Report</strong><br>
+                            If variance > ₱1K: Alert CFO, audit, resolve in 4hrs
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 6px;">
+                    <strong>Reporting Frequency:</strong><br>
+                    • Daily: Internal reconciliation report<br>
+                    • Weekly: Management review meeting<br>
+                    • Monthly: BSP submission (if required)<br>
+                    • Quarterly: External auditor verification<br>
+                    • Annually: Full financial audit
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Statistics -->
+        <div class="section">
+            <div class="section-title">6. Transaction Flow Statistics (Target Metrics)</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Auto-Release Rate<br>(No Disputes)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">10%</div>
+                    <div class="stat-label">Disputed Transactions<br>(Mediation Required)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5%</div>
+                    <div class="stat-label">Pre-Service Cancellations<br>(Before Escrow Release)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">&lt;7 Days</div>
+                    <div class="stat-label">Average Dispute Resolution Time</div>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">48hrs</div>
+                    <div class="stat-label">Auto-Release Window<br>(If No Action)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">₱2,500</div>
+                    <div class="stat-label">Average Transaction Value</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">10%</div>
+                    <div class="stat-label">Platform Take Rate<br>(8% provider + 2% consumer)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">99.9%</div>
+                    <div class="stat-label">Reconciliation Accuracy<br>(Daily Matching)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fund Flow by Volume -->
+        <div class="section">
+            <div class="section-title">7. Monthly Fund Flow Volume (Sandbox Phase - Month 12 Projection)</div>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; text-align: center;">
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 10px;">TOTAL INFLOW</div>
+                        <div style="font-size: 36px; font-weight: bold;">₱25M</div>
+                        <div style="font-size: 13px; margin-top: 8px;">Consumer payments + wallet top-ups</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 10px;">AVG. ESCROW HOLD</div>
+                        <div style="font-size: 36px; font-weight: bold;">₱6M</div>
+                        <div style="font-size: 13px; margin-top: 8px;">Active transactions in escrow (at any time)</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 10px;">TOTAL OUTFLOW</div>
+                        <div style="font-size: 36px; font-weight: bold;">₱22.5M</div>
+                        <div style="font-size: 13px; margin-top: 8px;">Provider withdrawals (90% of GMV)</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.3);">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; font-size: 13px;">
+                        <div>
+                            <strong>Platform Revenue</strong><br>
+                            ₱2.5M (10% take rate)
+                        </div>
+                        <div>
+                            <strong>User Count</strong><br>
+                            10,000 users (sandbox limit)
+                        </div>
+                        <div>
+                            <strong>Transaction Count</strong><br>
+                            ~10,000 transactions/month
+                        </div>
+                        <div>
+                            <strong>Avg. Wallet Balance</strong><br>
+                            ₱3,800 per active user
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h4 style="margin-bottom: 15px; color: #2c3e50;">Legend & Key Definitions</h4>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3498db;"></div>
+                    <span><strong>Trust Account:</strong> BSP-compliant segregated account for user funds</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e74c3c;"></div>
+                    <span><strong>Escrow:</strong> Locked funds until service completion verification</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span><strong>Wallet Balance:</strong> User-owned funds available for transactions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span><strong>Operating Account:</strong> Platform revenue and expenses only</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9b59b6;"></div>
+                    <span><strong>Settlement Account:</strong> Provider payout processing account</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #95a5a6;"></div>
+                    <span><strong>Reserve Buffer:</strong> 10% liquidity cushion for withdrawals</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Notes -->
+        <div style="margin-top: 40px; padding: 25px; background: #f8f9fa; border-left: 4px solid #3498db; border-radius: 6px;">
+            <h4 style="color: #2c3e50; margin-bottom: 15px;">Critical BSP Compliance Notes</h4>
+            <ul style="color: #555; line-height: 2; margin-left: 20px;">
+                <li><strong>Complete Fund Segregation:</strong> User funds in Trust Account never commingled with platform operating funds</li>
+                <li><strong>Daily Reconciliation:</strong> Automated daily balance verification with manual audit escalation if variance detected</li>
+                <li><strong>Escrow Protection:</strong> 100% of service payments go through escrow mechanism - no direct P2P transfers</li>
+                <li><strong>Insolvency Protection:</strong> Even if platform fails, user funds are protected in separate trust account</li>
+                <li><strong>Reserve Requirements:</strong> 10% buffer maintained above user balances + escrows for liquidity</li>
+                <li><strong>Transparency:</strong> Users can view transaction history and wallet balance in real-time</li>
+                <li><strong>Withdrawal Rights:</strong> Users can withdraw available wallet balance anytime (not locked in platform)</li>
+                <li><strong>Audit Trail:</strong> Every peso movement tracked with timestamp, user ID, transaction ID for BSP reporting</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center; color: #7f8c8d; font-size: 14px; padding-top: 20px; border-top: 2px solid #ecf0f1;">
+            <p><strong>AI TrustTrade Fund Flow Diagram</strong> | Prepared for BSP TRISD Technical Review</p>
+            <p>NS Solution Corp | November 2025 | Confidential - For Regulatory Discussion Only</p>
+        </div>
+    </div>
+</body>
+</html>

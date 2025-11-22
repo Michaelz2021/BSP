@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TrustTrade Technical Architecture & Security - BSP TRISD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 40px 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            width: 35px;
+            height: 35px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: #f8f9fa;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .arch-layer {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .layer-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .layer-components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .component {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 13px;
+            border: 1px solid #e0e6ed;
+        }
+        
+        /* Security Layers */
+        .security-layers {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .security-layer {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+        }
+        
+        .security-layer h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .security-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .security-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .security-item-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+        
+        .security-item-desc {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        /* Tech Stack Table */
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .tech-table thead {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .tech-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .tech-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .tech-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Infrastructure Grid */
+        .infra-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .infra-card {
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .infra-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #e74c3c;
+        }
+        
+        .infra-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        
+        .infra-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .infra-desc {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        /* Compliance Box */
+        .compliance-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .compliance-box h3 {
+            color: #155724;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .compliance-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .compliance-item strong {
+            color: #155724;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .compliance-item span {
+            font-size: 13px;
+            color: #155724;
+            line-height: 1.6;
+        }
+        
+        /* Code Block */
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* Disaster Recovery */
+        .dr-timeline {
+            margin: 30px 0;
+        }
+        
+        .dr-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .dr-time {
+            min-width: 100px;
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 16px;
+        }
+        
+        .dr-content {
+            flex: 1;
+        }
+        
+        .dr-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .dr-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>AI TrustTrade Technical Architecture & Security</h1>
+            <p>Comprehensive Infrastructure, Security Layers, and BSP Circular 808 Compliance</p>
+            <p style="margin-top: 10px; color: #e74c3c; font-weight: bold;">NS Solution Corp | BSP TRISD Technical Review | November 2025</p>
+        </div>
+
+        <!-- System Architecture Overview -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">🏗️</div>
+                1. System Architecture Overview
+            </div>
+            <div class="arch-diagram">
+                <div class="arch-layer">
+                    <div class="layer-title">Layer 1: Presentation Layer (Client-Side)</div>
+                    <div class="layer-components">
+                        <div class="component"><strong>Web App</strong><br>React 18 + Next.js 14</div>
+                        <div class="component"><strong>Mobile App</strong><br>Flutter 3.16</div>
+                        <div class="component"><strong>Admin Portal</strong><br>React + Material-UI</div>
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="layer-title">Layer 2: API Gateway & Load Balancing</div>
+                    <div class="layer-components">
+                        <div class="component"><strong>AWS ALB</strong><br>Application Load Balancer</div>
+                        <div class="component"><strong>API Gateway</strong><br>Request routing, rate limiting</div>
+                        <div class="component"><strong>WAF</strong><br>Web Application Firewall</div>
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="layer-title">Layer 3: Microservices (Business Logic)</div>
+                    <div class="layer-components">
+                        <div class="component"><strong>Auth Service</strong><br>JWT, OAuth 2.0, 2FA</div>
+                        <div class="component"><strong>Core Service</strong><br>Users, Bookings, Reviews</div>
+                        <div class="component"><strong>Payment Service</strong><br>Escrow, Wallet, Transactions</div>
+                        <div class="component"><strong>AI Service</strong><br>Trust Score, Matching, Verification</div>
+                        <div class="component"><strong>Notification Service</strong><br>SMS, Email, Push</div>
+                        <div class="component"><strong>File Service</strong><br>Image upload, storage</div>
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="layer-title">Layer 4: Data Layer</div>
+                    <div class="layer-components">
+                        <div class="component"><strong>PostgreSQL</strong><br>Primary database (RDS Multi-AZ)</div>
+                        <div class="component"><strong>Redis</strong><br>Cache, sessions (ElastiCache)</div>
+                        <div class="component"><strong>MongoDB</strong><br>Chat messages, logs</div>
+                        <div class="component"><strong>S3</strong><br>File storage, backups</div>
+                    </div>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="layer-title">Layer 5: External Integrations</div>
+                    <div class="layer-components">
+                        <div class="component"><strong>PayMongo</strong><br>Card payments</div>
+                        <div class="component"><strong>GCash</strong><br>E-wallet integration</div>
+                        <div class="component"><strong>PayMaya</strong><br>E-wallet integration</div>
+                        <div class="component"><strong>Twilio</strong><br>SMS gateway</div>
+                        <div class="component"><strong>SendGrid</strong><br>Email delivery</div>
+                        <div class="component"><strong>FCM</strong><br>Push notifications</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">💻</div>
+                2. Technology Stack Detailed
+            </div>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Technology</th>
+                        <th>Version</th>
+                        <th>Purpose / Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Backend Framework</strong></td>
+                        <td>Node.js + NestJS</td>
+                        <td>20 LTS + 10.x</td>
+                        <td>TypeScript support, microservices architecture, dependency injection, production-ready</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frontend Web</strong></td>
+                        <td>React + Next.js</td>
+                        <td>18 + 14</td>
+                        <td>Server-side rendering, SEO optimization, fast page loads, modern React features</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile App</strong></td>
+                        <td>Flutter</td>
+                        <td>3.16</td>
+                        <td>Single codebase for iOS + Android, native performance, 60fps UI, BLoC state management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary Database</strong></td>
+                        <td>PostgreSQL</td>
+                        <td>15</td>
+                        <td>ACID compliance, JSON support, robust transactions, proven reliability for financial data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cache / Session</strong></td>
+                        <td>Redis</td>
+                        <td>7</td>
+                        <td>In-memory speed, session management, rate limiting, pub/sub for real-time features</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Document Store</strong></td>
+                        <td>MongoDB</td>
+                        <td>7</td>
+                        <td>Chat messages, activity logs, flexible schema for evolving data structures</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cloud Provider</strong></td>
+                        <td>AWS</td>
+                        <td>Current</td>
+                        <td>Singapore region (ap-southeast-1), comprehensive PaaS offerings, BSP-approved infrastructure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Container Orchestration</strong></td>
+                        <td>AWS ECS Fargate</td>
+                        <td>Current</td>
+                        <td>Serverless containers, auto-scaling, no EC2 management, cost-effective for pilot scale</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Balancer</strong></td>
+                        <td>AWS ALB</td>
+                        <td>Current</td>
+                        <td>Layer 7 routing, health checks, SSL termination, integrates with WAF</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CDN</strong></td>
+                        <td>CloudFront</td>
+                        <td>Current</td>
+                        <td>Static asset delivery, edge caching, DDoS protection at network edge</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security - WAF</strong></td>
+                        <td>AWS WAF</td>
+                        <td>Current</td>
+                        <td>OWASP Top 10 protection, SQL injection prevention, XSS filtering, rate limiting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security - DDoS</strong></td>
+                        <td>AWS Shield</td>
+                        <td>Standard</td>
+                        <td>Network and transport layer DDoS protection, always-on detection and mitigation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Secrets Management</strong></td>
+                        <td>AWS Secrets Manager</td>
+                        <td>Current</td>
+                        <td>Encrypted storage for API keys, database passwords, automatic rotation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoring</strong></td>
+                        <td>DataDog + CloudWatch</td>
+                        <td>Current</td>
+                        <td>Application performance monitoring, log aggregation, alerting, dashboards</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error Tracking</strong></td>
+                        <td>Sentry</td>
+                        <td>Current</td>
+                        <td>Real-time error reporting, stack traces, release tracking, performance monitoring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CI/CD</strong></td>
+                        <td>GitHub Actions</td>
+                        <td>Current</td>
+                        <td>Automated testing, build, deployment, integrated with GitHub repository</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI/ML Platform</strong></td>
+                        <td>Python + TensorFlow</td>
+                        <td>3.11 + 2.x</td>
+                        <td>Trust score model training, fraud detection, service matching algorithms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payment Gateway</strong></td>
+                        <td>PayMongo</td>
+                        <td>API v1</td>
+                        <td>PCI-DSS compliant, Philippine-focused, supports cards + alternative payment methods</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Security Architecture -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">🔐</div>
+                3. Multi-Layer Security Architecture
+            </div>
+            
+            <div class="security-layers">
+                <div class="security-layer">
+                    <h3>🌐 Layer 1: Network Security</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Virtual Private Cloud (VPC)</div>
+                            <div class="security-item-desc">
+                                Isolated network with private subnets for databases and microservices. Public subnets only for load balancer. No direct internet access to application servers.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Security Groups & NACLs</div>
+                            <div class="security-item-desc">
+                                Firewall rules at instance and subnet levels. Least-privilege principle - only required ports open (443 HTTPS, internal service ports). DDoS protection via AWS Shield.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Web Application Firewall (WAF)</div>
+                            <div class="security-item-desc">
+                                Protects against OWASP Top 10: SQL injection, XSS, CSRF. Custom rules for rate limiting (max 100 req/min per IP). Geo-blocking for high-risk countries.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">DDoS Mitigation</div>
+                            <div class="security-item-desc">
+                                AWS Shield Standard (free tier) for network/transport layer protection. CloudFront edge locations absorb traffic spikes. Auto-scaling to handle legitimate surges.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-layer">
+                    <h3>🔑 Layer 2: Authentication & Authorization</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Multi-Factor Authentication (MFA)</div>
+                            <div class="security-item-desc">
+                                Mandatory for transactions >₱10,000. SMS OTP (Twilio) or authenticator app (TOTP). Biometric authentication on mobile (fingerprint, Face ID). Device binding for trusted devices.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">JWT Token Management</div>
+                            <div class="security-item-desc">
+                                Short-lived access tokens (15 min expiry). Refresh tokens (7 days) stored in HttpOnly cookies. Token blacklist in Redis for immediate revocation. RS256 algorithm (asymmetric signing).
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Role-Based Access Control (RBAC)</div>
+                            <div class="security-item-desc">
+                                5 roles: Consumer, Provider, Admin, Mediator, Super Admin. Permissions matrix controls API endpoint access. Principle of least privilege - users only access what they need.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Session Management</div>
+                            <div class="security-item-desc">
+                                Redis-based session store with 30-min timeout. Concurrent session limit (max 3 devices). Automatic logout on password change. IP address + user-agent validation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-layer">
+                    <h3>🔒 Layer 3: Data Encryption</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Encryption at Rest</div>
+                            <div class="security-item-desc">
+                                <strong>Database:</strong> AES-256 encryption for RDS volumes (PostgreSQL, MongoDB)<br>
+                                <strong>Files:</strong> S3 bucket encryption (SSE-S3)<br>
+                                <strong>Backups:</strong> Encrypted snapshots<br>
+                                <strong>Sensitive Fields:</strong> Additional application-level encryption for PII (government IDs, bank account numbers)
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Encryption in Transit</div>
+                            <div class="security-item-desc">
+                                <strong>HTTPS Only:</strong> TLS 1.3 for all client-server communication. No HTTP allowed (301 redirect to HTTPS).<br>
+                                <strong>Internal Services:</strong> TLS between microservices<br>
+                                <strong>Database Connections:</strong> Encrypted PostgreSQL connections<br>
+                                <strong>Certificate:</strong> AWS Certificate Manager (auto-renewal)
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Key Management</div>
+                            <div class="security-item-desc">
+                                AWS Secrets Manager for API keys, database passwords. AWS KMS (Key Management Service) for envelope encryption. Automatic key rotation every 90 days. Keys never exposed in code or logs.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Payment Data Security</div>
+                            <div class="security-item-desc">
+                                <strong>PCI-DSS Compliance:</strong> Never store credit card data on platform. Tokenization via PayMongo (PCI-DSS Level 1). Only tokens stored in database. E-wallet credentials encrypted at application level.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-layer">
+                    <h3>🛡️ Layer 4: Application Security</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Input Validation & Sanitization</div>
+                            <div class="security-item-desc">
+                                All inputs validated using Zod schemas. SQL injection prevention via parameterized queries (ORM). XSS protection via output encoding. File upload restrictions (type, size, content validation).
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">API Rate Limiting</div>
+                            <div class="security-item-desc">
+                                <strong>Global:</strong> 100 requests/min per IP<br>
+                                <strong>Authentication:</strong> 5 login attempts/15 min (lockout after)<br>
+                                <strong>Transaction:</strong> 10 transactions/hour per user<br>
+                                <strong>Wallet Top-Up:</strong> 5 top-ups/day per user<br>
+                                Rate limits enforced in Redis with sliding window algorithm.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">CSRF Protection</div>
+                            <div class="security-item-desc">
+                                Anti-CSRF tokens for all state-changing requests. SameSite cookie attribute (Strict). Origin header validation. Double-submit cookie pattern for API requests.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Security Headers</div>
+                            <div class="security-item-desc">
+                                <strong>Content-Security-Policy:</strong> Prevents XSS via inline scripts<br>
+                                <strong>X-Frame-Options:</strong> DENY (clickjacking protection)<br>
+                                <strong>Strict-Transport-Security:</strong> Force HTTPS<br>
+                                <strong>X-Content-Type-Options:</strong> nosniff
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-layer">
+                    <h3>👁️ Layer 5: Monitoring & Detection</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Real-Time Threat Detection</div>
+                            <div class="security-item-desc">
+                                AWS GuardDuty for intrusion detection. Anomaly detection for unusual user behavior (AI-powered). Automated alerts via PagerDuty for critical security events. Log analysis for suspicious patterns.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Security Information and Event Management (SIEM)</div>
+                            <div class="security-item-desc">
+                                Centralized logging via ELK Stack (Elasticsearch, Logstash, Kibana). All security events logged: login attempts, failed transactions, permission changes. 90-day retention for security logs.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Vulnerability Scanning</div>
+                            <div class="security-item-desc">
+                                <strong>Daily:</strong> Automated vulnerability scans (AWS Inspector)<br>
+                                <strong>Weekly:</strong> Dependency checking (npm audit, Snyk)<br>
+                                <strong>Quarterly:</strong> External penetration testing by certified ethical hackers<br>
+                                <strong>Continuous:</strong> OWASP ZAP integration in CI/CD pipeline
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Incident Response</div>
+                            <div class="security-item-desc">
+                                24-hour incident response team (on-call rotation). Playbooks for common security incidents. Automated containment (isolate compromised accounts). BSP notification within 24 hours for material breaches.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-layer">
+                    <h3>📜 Layer 6: Compliance & Audit</h3>
+                    <div class="security-items">
+                        <div class="security-item">
+                            <div class="security-item-title">Audit Trails</div>
+                            <div class="security-item-desc">
+                                Immutable audit logs for all transactions, user actions, admin changes. 5-year retention per AMLA requirements. Tamper-proof timestamps. Exportable for regulatory audits.
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Compliance Certifications</div>
+                            <div class="security-item-desc">
+                                <strong>Target:</strong> ISO 27001 (Information Security Management)<br>
+                                <strong>In Progress:</strong> PCI-DSS Level 1 (via PayMongo)<br>
+                                <strong>Planned:</strong> SOC 2 Type II (after 12-month operational history)
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Regular Security Audits</div>
+                            <div class="security-item-desc">
+                                <strong>Internal:</strong> Monthly security reviews by CTO<br>
+                                <strong>External:</strong> Quarterly audits by BSP-accredited firm<br>
+                                <strong>Penetration Testing:</strong> Every 6 months<br>
+                                <strong>Code Reviews:</strong> Automated (SonarQube) + manual (peer review)
+                            </div>
+                        </div>
+                        <div class="security-item">
+                            <div class="security-item-title">Data Privacy Compliance</div>
+                            <div class="security-item-desc">
+                                Data Privacy Act 2012 compliance. NPC registration. Data Protection Officer appointed. User consent management. Right to deletion (GDPR-style). Data minimization principle.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infrastructure Resilience -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">🏢</div>
+                4. Infrastructure Resilience & High Availability
+            </div>
+            <div class="infra-grid">
+                <div class="infra-card">
+                    <div class="infra-icon">☁️</div>
+                    <div class="infra-title">Multi-AZ Deployment</div>
+                    <div class="infra-desc">
+                        All critical services deployed across 3 Availability Zones in AWS Singapore region. Automatic failover if one AZ fails. Database replicas in multiple AZs. Load balancer distributes traffic across zones.
+                    </div>
+                </div>
+
+                <div class="infra-card">
+                    <div class="infra-icon">⚖️</div>
+                    <div class="infra-title">Auto-Scaling</div>
+                    <div class="infra-desc">
+                        Horizontal scaling based on CPU (>70%), memory (>80%), or request rate. Min 2 instances per service (redundancy). Max 20 instances (cost control). Scale-up in 2 min, scale-down in 5 min.
+                    </div>
+                </div>
+
+                <div class="infra-card">
+                    <div class="infra-icon">💾</div>
+                    <div class="infra-title">Database Redundancy</div>
+                    <div class="infra-desc">
+                        PostgreSQL RDS Multi-AZ (synchronous replication). Read replicas for heavy queries. Automated backups daily (30-day retention). Point-in-time recovery up to 5 minutes ago.
+                    </div>
+                </div>
+
+                <div class="infra-card">
+                    <div class="infra-icon">🔄</div>
+                    <div class="infra-title">Load Balancing</div>
+                    <div class="infra-desc">
+                        Application Load Balancer with health checks every 30 sec. Unhealthy instances removed in 1 min. Sticky sessions for stateful operations. SSL termination at load balancer.
+                    </div>
+                </div>
+
+                <div class="infra-card">
+                    <div class="infra-icon">📦</div>
+                    <div class="infra-title">Containerization</div>
+                    <div class="infra-desc">
+                        Docker containers for all services. Immutable infrastructure - no manual changes. Fast rollback (deploy previous container image). Blue-green deployments for zero downtime.
+                    </div>
+                </div>
+
+                <div class="infra-card">
+                    <div class="infra-icon">🌍</div>
+                    <div class="infra-title">Content Delivery (CDN)</div>
+                    <div class="infra-desc">
+                        CloudFront CDN with 200+ edge locations worldwide. Static assets cached at edge. Dynamic content acceleration. DDoS protection at network edge. Cache invalidation in <5 min.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">📊</div>
+                5. Performance & Availability Targets
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">99.9%</div>
+                    <div class="metric-label">Uptime SLA<br>(43 min downtime/month max)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">&lt;200ms</div>
+                    <div class="metric-label">API Response Time<br>(95th percentile)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">&lt;2 sec</div>
+                    <div class="metric-label">Page Load Time<br>(First Contentful Paint)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">&lt;500ms</div>
+                    <div class="metric-label">Transaction Processing<br>(Payment to escrow)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">15 min</div>
+                    <div class="metric-label">RTO (Recovery Time)<br>(Max downtime in disaster)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">15 min</div>
+                    <div class="metric-label">RPO (Recovery Point)<br>(Max data loss)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">10,000+</div>
+                    <div class="metric-label">Concurrent Users<br>(Supported)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">1,000/sec</div>
+                    <div class="metric-label">Transactions per Second<br>(Peak capacity)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disaster Recovery -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">🚨</div>
+                6. Disaster Recovery & Business Continuity
+            </div>
+            <div class="dr-timeline">
+                <div class="dr-item">
+                    <div class="dr-time">0-5 min</div>
+                    <div class="dr-content">
+                        <div class="dr-title">Detection & Alert</div>
+                        <div class="dr-desc">
+                            <strong>Automated Monitoring:</strong> Health checks every 30 sec detect outage<br>
+                            <strong>Alerting:</strong> PagerDuty notifies on-call engineer immediately<br>
+                            <strong>Initial Assessment:</strong> Determine scope (single service vs. multi-service vs. full outage)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-item">
+                    <div class="dr-time">5-15 min</div>
+                    <div class="dr-content">
+                        <div class="dr-title">Immediate Response & Failover</div>
+                        <div class="dr-desc">
+                            <strong>Database Failover:</strong> RDS Multi-AZ automatic failover to standby (1-2 min)<br>
+                            <strong>Service Restart:</strong> ECS automatically restarts failed containers<br>
+                            <strong>Traffic Rerouting:</strong> Load balancer redirects to healthy instances<br>
+                            <strong>User Communication:</strong> Status page updated, in-app notification sent
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-item">
+                    <div class="dr-time">15-60 min</div>
+                    <div class="dr-content">
+                        <div class="dr-title">Root Cause Analysis & Fix</div>
+                        <div class="dr-desc">
+                            <strong>Investigation:</strong> Review logs (CloudWatch, Sentry) to identify root cause<br>
+                            <strong>Hotfix:</strong> Deploy emergency fix if code-related<br>
+                            <strong>Infrastructure Fix:</strong> Restore/rebuild failed infrastructure components<br>
+                            <strong>Validation:</strong> Verify system fully operational before declaring resolution
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-item">
+                    <div class="dr-time">1-4 hours</div>
+                    <div class="dr-content">
+                        <div class="dr-title">Full Recovery & Validation</div>
+                        <div class="dr-desc">
+                            <strong>Data Integrity Check:</strong> Verify no data corruption or loss<br>
+                            <strong>Reconciliation:</strong> Ensure trust account balances match (automated script)<br>
+                            <strong>User Notification:</strong> Email to affected users with incident summary<br>
+                            <strong>BSP Reporting:</strong> Notify BSP if material incident (24-hour requirement)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dr-item">
+                    <div class="dr-time">24-48 hours</div>
+                    <div class="dr-content">
+                        <div class="dr-title">Post-Incident Review</div>
+                        <div class="dr-desc">
+                            <strong>Post-Mortem:</strong> Team meeting to analyze what happened and why<br>
+                            <strong>Action Items:</strong> Document preventive measures and assign owners<br>
+                            <strong>Runbook Update:</strong> Update incident response procedures based on learnings<br>
+                            <strong>Regulatory Report:</strong> Submit incident report to SEC/BSP if required
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BSP Circular 808 Compliance -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">📋</div>
+                7. BSP Circular 808 Compliance (IT Risk Management)
+            </div>
+            <div class="compliance-box">
+                <h3>BSP Circular 808: Risk Management Systems for BSP-Supervised Financial Institutions</h3>
+                <p style="color: #155724; margin-bottom: 20px; line-height: 1.8;">
+                    AI TrustTrade implements comprehensive IT risk management aligned with BSP Circular 808 requirements, demonstrating readiness for financial institution-grade security and operational resilience.
+                </p>
+                <div class="compliance-grid">
+                    <div class="compliance-item">
+                        <strong>1. IT Governance</strong>
+                        <span>
+                            • Board-level IT oversight (CTO reports to board quarterly)<br>
+                            • IT Risk Management Framework documented and approved<br>
+                            • Chief Information Security Officer (CISO) designated<br>
+                            • Annual IT strategy review and budget allocation
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>2. Risk Assessment</strong>
+                        <span>
+                            • Annual IT risk assessment (threat identification, vulnerability analysis)<br>
+                            • Risk register maintained with mitigation plans<br>
+                            • Business Impact Analysis (BIA) for critical systems<br>
+                            • Quarterly risk review and update
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>3. Information Security</strong>
+                        <span>
+                            • ISO 27001-aligned Information Security Policy<br>
+                            • Access control matrix (RBAC with least privilege)<br>
+                            • Encryption standards (TLS 1.3, AES-256)<br>
+                            • Security awareness training for all staff (quarterly)
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>4. Business Continuity & Disaster Recovery</strong>
+                        <span>
+                            • Business Continuity Plan (BCP) documented and tested<br>
+                            • RTO: 15 minutes, RPO: 15 minutes<br>
+                            • Annual DR drill with tabletop exercises<br>
+                            • Backup and recovery procedures validated monthly
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>5. Change Management</strong>
+                        <span>
+                            • Formal change request and approval process<br>
+                            • Staging environment for pre-production testing<br>
+                            • Rollback procedures for all deployments<br>
+                            • Change log maintained for audit purposes
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>6. Incident Management</strong>
+                        <span>
+                            • 24/7 incident response team (on-call rotation)<br>
+                            • Incident classification and escalation matrix<br>
+                            • Post-incident review (PIR) within 48 hours<br>
+                            • Regulatory reporting (BSP within 24 hours for material incidents)
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>7. Audit & Compliance</strong>
+                        <span>
+                            • Internal audit program (quarterly security audits)<br>
+                            • External audit (annually by BSP-accredited firm)<br>
+                            • Compliance monitoring dashboard (real-time)<br>
+                            • Audit findings tracker with remediation timelines
+                        </span>
+                    </div>
+
+                    <div class="compliance-item">
+                        <strong>8. Outsourcing & Third-Party Risk</strong>
+                        <span>
+                            • Vendor risk assessment for all critical suppliers (AWS, PayMongo, etc.)<br>
+                            • SLA monitoring and performance reviews<br>
+                            • Contractual security and data protection clauses<br>
+                            • Annual vendor audit or certification review
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Testing & Validation -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">🧪</div>
+                8. Security Testing & Validation Program
+            </div>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Test Type</th>
+                        <th>Frequency</th>
+                        <th>Methodology</th>
+                        <th>Responsible Party</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Penetration Testing</strong></td>
+                        <td>Every 6 months</td>
+                        <td>External certified ethical hackers, OWASP Top 10 coverage, infrastructure + application testing</td>
+                        <td>Third-party security firm (e.g., Kaspersky, Trend Micro)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vulnerability Scanning</strong></td>
+                        <td>Daily (automated)</td>
+                        <td>AWS Inspector for infrastructure, Snyk for dependencies, OWASP ZAP for web app</td>
+                        <td>DevOps team (automated in CI/CD)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Code Security Review</strong></td>
+                        <td>Every commit</td>
+                        <td>SonarQube static analysis, peer code review, automated dependency checking</td>
+                        <td>Development team</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Audit</strong></td>
+                        <td>Quarterly</td>
+                        <td>Internal audit checklist (ISO 27001 controls), access review, configuration review</td>
+                        <td>Internal audit team</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compliance Audit</strong></td>
+                        <td>Annually</td>
+                        <td>BSP Circular 808 compliance assessment, Data Privacy Act review, PCI-DSS validation</td>
+                        <td>External auditor (BSP-accredited)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Testing</strong></td>
+                        <td>Before each release</td>
+                        <td>Apache JMeter or k6, simulate 10,000 concurrent users, identify bottlenecks</td>
+                        <td>QA team</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Disaster Recovery Drill</strong></td>
+                        <td>Annually</td>
+                        <td>Tabletop exercise + actual failover test, RTO/RPO validation</td>
+                        <td>Operations team + management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Social Engineering Test</strong></td>
+                        <td>Annually</td>
+                        <td>Phishing simulation for employees, measure click rate and reporting rate</td>
+                        <td>Third-party security awareness provider</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="section">
+            <div class="section-title">
+                <div class="icon">✅</div>
+                9. Security & Architecture Summary
+            </div>
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; line-height: 1.8;">
+                <h3 style="margin-bottom: 20px; font-size: 22px;">AI TrustTrade: Bank-Grade Security for Gig Economy Platform</h3>
+                <p style="margin-bottom: 15px;">
+                    AI TrustTrade's technical architecture is designed with security as the foundation, not an afterthought. Six layers of defense-in-depth protection ensure that user funds, personal data, and transaction integrity are protected to financial institution standards.
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong>Key Security Achievements:</strong>
+                </p>
+                <ul style="margin-left: 30px; margin-bottom: 20px; line-height: 2;">
+                    <li>Multi-layer security architecture (network → application → data)</li>
+                    <li>Encryption everywhere (TLS 1.3 in transit, AES-256 at rest)</li>
+                    <li>Zero-trust model (authenticate every request, least privilege access)</li>
+                    <li>BSP Circular 808 compliance (IT risk management for financial institutions)</li>
+                    <li>ISO 27001-aligned information security management</li>
+                    <li>99.9% uptime SLA with automated failover (RTO: 15 min, RPO: 15 min)</li>
+                    <li>Real-time threat detection and automated incident response</li>
+                    <li>Regular third-party security audits and penetration testing</li>
+                </ul>
+                <p style="font-weight: bold; font-size: 18px; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 15px; margin-top: 15px; text-align: center;">
+                    This architecture demonstrates AI TrustTrade's commitment to protecting Filipino gig workers' livelihoods with the same rigor as traditional banks protect deposits.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 40px; text-align: center; color: #7f8c8d; font-size: 14px; padding-top: 20px; border-top: 2px solid #ecf0f1;">
+            <p><strong>AI TrustTrade Technical Architecture & Security</strong></p>
+            <p>Prepared for BSP TRISD Technical Review | NS Solution Corp | November 2025</p>
+            <p style="margin-top: 10px; font-size: 12px;">Confidential - For Regulatory Discussion Only</p>
+        </div>
+    </div>
+</body>
+</html>
