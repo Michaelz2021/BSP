@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        #canvas-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .fairy-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, 0.3) 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) scale(1);
+            }
+            100% {
+                transform: translateY(0vh) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <div class="loading" id="loading">요정을 불러오는 중...</div>
+        <div class="fairy-particles" id="particles"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    
+    <script>
+        let scene, camera, renderer, fairy, particles, mixer, clock;
+        let animationId;
+        let currentModel = null;
+        
+        function init() {
+            // Scene 설정
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x667eea, 1, 100);
+            
+            // Camera 설정
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5);
+            
+            // Renderer 설정
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true, 
+                alpha: true,
+                preserveDrawingBuffer: false
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            
+            // Clock for animations
+            clock = new THREE.Clock();
+            
+            // 조명 설정
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // 포인트 라이트 (요정의 빛나는 효과)
+            const pointLight = new THREE.PointLight(0xff69b4, 1, 100);
+            pointLight.position.set(0, 2, 2);
+            scene.add(pointLight);
+            
+            // GLB 모델 로드
+            loadFairyModel();
+            createParticleSystem();
+            animate();
+            
+            // 윈도우 리사이즈 이벤트
+            window.addEventListener('resize', onWindowResize, false);
+        }
+        
+        function loadFairyModel() {
+            const loader = new THREE.GLTFLoader();
+            
+            // GLB 모델 경로 (Flutter assets에서 로드)
+            const modelPath = 'models/fairy.glb';
+            
+            loader.load(
+                modelPath,
+                function (gltf) {
+                    console.log('GLB 모델 로드 성공!');
+                    
+                    // 기존 모델 제거
+                    if (currentModel) {
+                        scene.remove(currentModel);
+                    }
+                    
+                    currentModel = gltf.scene;
+                    fairy = currentModel;
+                    
+                    // 모델 크기 조정
+                    fairy.scale.set(2, 2, 2);
+                    fairy.position.set(0, 0, 0);
+                    
+                    // 그림자 설정
+                    fairy.traverse(function (child) {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+                    
+                    scene.add(fairy);
+                    
+                    // 애니메이션 설정
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        console.log('애니메이션 발견:', gltf.animations.length, '개');
+                        mixer = new THREE.AnimationMixer(fairy);
+                        const action = mixer.clipAction(gltf.animations[0]);
+                        action.play();
+                    }
+                    
+                    // 로딩 화면 숨기기
+                    document.getElementById('loading').style.display = 'none';
+                },
+                function (xhr) {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                function (error) {
+                    console.error('GLB 모델 로드 실패:', error);
+                    // GLB 로드 실패 시 기본 요정 생성
+                    createDefaultFairy();
+                    document.getElementById('loading').style.display = 'none';
+                }
+            );
+        }
+        
+        function createDefaultFairy() {
+            console.log('기본 요정 생성');
+            // GLB 로드 실패 시 기본 요정 생성
+            const bodyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const bodyMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xff69b4,
+                transparent: true,
+                opacity: 0.8,
+                shininess: 100
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            
+            const headGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+            const headMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xffb6c1,
+                transparent: true,
+                opacity: 0.9
+            });
+            const head = new THREE.Mesh(headGeometry, headMaterial);
+            head.position.y = 0.8;
+            
+            const wingGeometry = new THREE.PlaneGeometry(1.5, 0.8);
+            const wingMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x87ceeb,
+                transparent: true,
+                opacity: 0.6,
+                side: THREE.DoubleSide
+            });
+            
+            const leftWing = new THREE.Mesh(wingGeometry, wingMaterial);
+            leftWing.position.set(-0.8, 0.5, 0);
+            leftWing.rotation.y = Math.PI / 4;
+            
+            const rightWing = new THREE.Mesh(wingGeometry, wingMaterial);
+            rightWing.position.set(0.8, 0.5, 0);
+            rightWing.rotation.y = -Math.PI / 4;
+            
+            fairy = new THREE.Group();
+            fairy.add(body);
+            fairy.add(head);
+            fairy.add(leftWing);
+            fairy.add(rightWing);
+            
+            scene.add(fairy);
+        }
+        
+        function createParticleSystem() {
+            const particleCount = 100;
+            const particleGeometry = new THREE.BufferGeometry();
+            const particlePositions = new Float32Array(particleCount * 3);
+            const particleSizes = new Float32Array(particleCount);
+            
+            for (let i = 0; i < particleCount; i++) {
+                particlePositions[i * 3] = (Math.random() - 0.5) * 20;
+                particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+                particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+                particleSizes[i] = Math.random() * 0.1 + 0.05;
+            }
+            
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+            particleGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+            
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.1,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+            
+            particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+        }
+        
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            
+            const delta = clock.getDelta();
+            const time = Date.now() * 0.001;
+            
+            // 애니메이션 믹서 업데이트
+            if (mixer) {
+                mixer.update(delta);
+            }
+            
+            // 요정 애니메이션 (GLB 모델이 없을 때)
+            if (fairy && !currentModel) {
+                fairy.rotation.y += 0.01;
+                fairy.position.y = Math.sin(time * 2) * 0.3;
+                if (fairy.children.length > 2) {
+                    fairy.children[2].rotation.z = Math.sin(time * 4) * 0.3; // 왼쪽 날개
+                    fairy.children[3].rotation.z = -Math.sin(time * 4) * 0.3; // 오른쪽 날개
+                }
+            }
+            
+            // GLB 모델이 있을 때는 회전만
+            if (fairy && currentModel) {
+                fairy.rotation.y += 0.005;
+                fairy.position.y = Math.sin(time * 1.5) * 0.2;
+            }
+            
+            // 파티클 애니메이션
+            if (particles) {
+                particles.rotation.y += 0.002;
+                const positions = particles.geometry.attributes.position.array;
+                for (let i = 1; i < positions.length; i += 3) {
+                    positions[i] += 0.01;
+                    if (positions[i] > 10) positions[i] = -10;
+                }
+                particles.geometry.attributes.position.needsUpdate = true;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', init);
+        
+        // CSS 파티클 생성
+        function createCSSParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // CSS 파티클 시작
+        createCSSParticles();
+        
+        // 주기적으로 새로운 CSS 파티클 추가
+        setInterval(() => {
+            const container = document.getElementById('particles');
+            if (container.children.length < 50) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = '0s';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 10000);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

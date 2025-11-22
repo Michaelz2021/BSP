@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetPal AI - 투자자 프레젠테이션</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .presentation {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 60px;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .slide h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .slide h2 {
+            font-size: 2.2em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        .slide h3 {
+            font-size: 1.8em;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        
+        .hero-slide {
+            background: linear-gradient(135deg, #ff9a56 0%, #ffad56 100%);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-slide h1 {
+            font-size: 4em;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .hero-metrics {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 50px;
+        }
+        
+        .metric-card {
+            background: rgba(255,255,255,0.2);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        
+        .metric-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+        
+        .problem-visual {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+        }
+        
+        .pain-point {
+            flex: 1;
+            text-align: center;
+            padding: 30px;
+            margin: 0 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 20px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .pain-point:hover {
+            transform: translateY(-10px);
+        }
+        
+        .solution-demo {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+        
+        .demo-screen {
+            flex: 1;
+            margin: 0 20px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            border: 3px solid #e9ecef;
+        }
+        
+        .tech-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .tech-card {
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .tech-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .competitors {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+        
+        .petpal {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            border: 3px solid #ff6b6b;
+        }
+        
+        .advantage {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            color: #333;
+        }
+        
+        .market-size {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+        }
+        
+        .market-circle {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: conic-gradient(#ff6b6b 0deg 153deg, #4ecdc4 153deg 207deg, #45b7d1 207deg 252deg, #96ceb4 252deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .market-center {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-weight: bold;
+        }
+        
+        .revenue-model {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+        
+        .revenue-stream {
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .revenue-percentage {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .financial-projections {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+        
+        .year-projection {
+            flex: 1;
+            text-align: center;
+            padding: 30px;
+            margin: 0 10px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 20px;
+        }
+        
+        .year {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .revenue {
+            font-size: 2em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .users {
+            font-size: 1.2em;
+            color: #3498db;
+            opacity: 0.8;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .team-member {
+            padding: 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .investment-ask {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+        }
+        
+        .ask-amount {
+            flex: 1;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 20px;
+            margin: 0 20px;
+        }
+        
+        .ask-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #e17055;
+            font-weight: bold;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .competitive-advantage {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+        
+        .advantage-item {
+            flex: 1;
+            text-align: center;
+            padding: 25px;
+            margin: 0 10px;
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">12</span>
+        </div>
+        
+        <!-- Slide 1: Hero -->
+        <div class="slide active hero-slide">
+            <h1>🐾 PetPal AI</h1>
+            <p class="hero-subtitle">세계 최초 LLM + T2M AI 융합 반려동물 플랫폼</p>
+            <p class="hero-subtitle">"디지털 장난감을 넘어 진정한 AI 동반자로"</p>
+            
+            <div class="hero-metrics">
+                <div class="metric-card">
+                    <div class="metric-number">$85억</div>
+                    <div class="metric-label">시장 규모 (SAM)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">95ms</div>
+                    <div class="metric-label">응답 속도</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">5년</div>
+                    <div class="metric-label">기술 독점 우위</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 시장 문제 정의 -->
+        <div class="slide">
+            <h2>📊 시장 기회: 1인 가구 시대의 디지털 동반자 혁명</h2>
+            
+            <div class="problem-visual">
+                <div class="pain-point">
+                    <h3>🏠 주거 제약</h3>
+                    <p><strong>60%</strong>의 1인 가구</p>
+                    <p>원룸, 반려동물 금지</p>
+                </div>
+                <div class="pain-point">
+                    <h3>💰 경제적 부담</h3>
+                    <p><strong>월 50만원+</strong></p>
+                    <p>사료, 병원비, 보험료</p>
+                </div>
+                <div class="pain-point">
+                    <h3>⏰ 시간 부족</h3>
+                    <p><strong>주 52시간</strong> 근무</p>
+                    <p>충분한 돌봄 불가능</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎯 핵심 기회</h3>
+                <p><strong>82%</strong>의 20-35세 도시 거주자: "진짜 반려동물처럼 대화하고 교감하는 AI 펫을 원한다"</p>
+                <p><strong>1인 가구 33.4%</strong> (1,600만 가구) + <strong>반려동물 관심층 1,500만 가구</strong> = 거대한 잠재 시장</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">3,100만</div>
+                    <div class="stat-label">글로벌 타겟 고객</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$850억</div>
+                    <div class="stat-label">TAM 시장 규모</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15%</div>
+                    <div class="stat-label">연간 성장률</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$30</div>
+                    <div class="stat-label">목표 ARPU</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 솔루션 -->
+        <div class="slide">
+            <h2>🚀 혁신적 솔루션: LLM + T2M AI 융합 기술</h2>
+            
+            <div class="solution-demo">
+                <div class="demo-screen">
+                    <h3>🗣️ LLM 대화 AI</h3>
+                    <div style="background: #f1f3f4; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                        <p><strong>사용자:</strong> "오늘 힘든 일이 있었어"</p>
+                        <p><strong>AI 펫:</strong> "힘드셨구나... 제가 옆에 있어드릴게요. 무슨 일이 있었는지 말씀해주세요. *다가와서 머리를 기댄다*"</p>
+                    </div>
+                    <ul>
+                        <li>✅ 무제한 자연 대화</li>
+                        <li>✅ 감정 인식 & 공감</li>
+                        <li>✅ 장기 기억 시스템</li>
+                        <li>✅ 개별 성격 발달</li>
+                    </ul>
+                </div>
+                
+                <div class="demo-screen">
+                    <h3>🎭 T2M 동작 AI</h3>
+                    <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                        <p><strong>명령:</strong> "기뻐하면서 점프해!"</p>
+                        <p><strong>결과:</strong> 꼬리를 흔들며 높이 점프하는 애니메이션 + "너무 행복해요!" 말풍선</p>
+                    </div>
+                    <ul>
+                        <li>✅ 50+ 품종별 전용 모션</li>
+                        <li>✅ 실시간 95ms 응답</li>
+                        <li>✅ 생물역학 기반 자연스러움</li>
+                        <li>✅ 감정-동작 완벽 동기화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🏆 세계 최초 기술적 혁신</h3>
+                <p><strong>기존:</strong> 단방향 명령-반응 (100-200가지 패턴)</p>
+                <p><strong>PetPal AI:</strong> 양방향 감정 교감 (무한 조합 가능)</p>
+                <p><strong>특허 출원:</strong> 5건 준비 완료 (동물 T2M AI 핵심 기술 보호)</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: 경쟁 우위 -->
+        <div class="slide">
+            <h2>⚡ 압도적 기술 경쟁력</h2>
+            
+            <div class="tech-comparison">
+                <div class="tech-card competitors">
+                    <h3>🎮 기존 경쟁사</h3>
+                    <p><strong>응답 속도:</strong> 500ms+</p>
+                    <p><strong>대화 패턴:</strong> 100-200가지</p>
+                    <p><strong>개별화:</strong> 없음</p>
+                    <p><strong>감정 인식:</strong> 제한적</p>
+                    <p><strong>학습 능력:</strong> 없음</p>
+                    <p><strong>모션 품질:</strong> 2D/단순 3D</p>
+                </div>
+                
+                <div class="tech-card petpal">
+                    <h3>🏆 PetPal AI</h3>
+                    <p><strong>응답 속도:</strong> 95ms (5배 빠름)</p>
+                    <p><strong>대화 패턴:</strong> 무제한</p>
+                    <p><strong>개별화:</strong> 10,000+ 조합</p>
+                    <p><strong>감정 인식:</strong> 실시간 전문</p>
+                    <p><strong>학습 능력:</strong> 개별 적응 성장</p>
+                    <p><strong>모션 품질:</strong> 생물역학 기반</p>
+                </div>
+                
+                <div class="tech-card advantage">
+                    <h3>🔥 경쟁 우위</h3>
+                    <p><strong>기술 격차:</strong> 2-4년</p>
+                    <p><strong>진입 비용:</strong> 100억원+</p>
+                    <p><strong>데이터 자산:</strong> 50,000+ 모션</p>
+                    <p><strong>특허 보호:</strong> 5건 출원</p>
+                    <p><strong>팀 전문성:</strong> AI+게임+동물행동학</p>
+                    <p><strong>독점 기간:</strong> 3-5년 확보</p>
+                </div>
+            </div>
+
+            <div class="competitive-advantage">
+                <div class="advantage-item">
+                    <h3>🧬 세계 유일</h3>
+                    <p>동물 전용 T2M AI</p>
+                    <p>1년+ R&D 투자 결과</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>🔬 감정적 유대</h3>
+                    <p>단순 게임 → 진정한 동반자</p>
+                    <p>99.9% 정확도</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>⚡ 학습 능력</h3>
+                    <p>사용자별 맞춤형 성장</p>
+                    <p>1000+ 모션 패턴</p>
+                </div>
+                <div class="advantage-item">
+                    <h3>🏁 높은 진입장벽</h3>
+                    <p>복합 AI 전문성 필요</p>
+                    <p>2-4년 독점 지위</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 시장 규모 -->
+        <div class="slide">
+            <h2>📈 폭발적 성장 시장</h2>
+            
+            <div class="market-size">
+                <div class="market-circle">
+                    <div class="market-center">
+                        <div style="font-size: 2em; color: #e74c3c;">$85억</div>
+                        <div>SAM</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">$850억</div>
+                    <div class="stat-label">TAM (글로벌 AI 컴패니언)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$85억</div>
+                    <div class="stat-label">SAM (주요 4개 시장)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$8.5억</div>
+                    <div class="stat-label">SOM (5년 내 목표)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">280만</div>
+                    <div class="stat-label">목표 사용자 (10% 침투)</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎯 1차 타겟: 도시 거주 20-35세 (SOM의 70%)</h3>
+                <p><strong>페인 포인트:</strong> 반려동물 키우고 싶지만 원룸, 직장 생활로 불가능</p>
+                <p><strong>구매력:</strong> 월 평균 5만원+ 모바일 앱 결제 경험</p>
+                <p><strong>규모:</strong> 한국 300만명, 글로벌 2,800만명</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                <div style="flex: 1; margin: 0 15px; padding: 20px; background: #e8f4fd; border-radius: 15px;">
+                    <h3>🌍 사회적 요인</h3>
+                    <p>• 1인 가구 증가 (33.4%)</p>
+                    <p>• 펫 문화 확산</p>
+                    <p>• 디지털 네이티브 성장</p>
+                </div>
+                <div style="flex: 1; margin: 0 15px; padding: 20px; background: #fff2e8; border-radius: 15px;">
+                    <h3>🔬 기술적 요인</h3>
+                    <p>• AI 기술 성숙</p>
+                    <p>• 5G 상용화</p>
+                    <p>• GPU 성능 향상</p>
+                </div>
+                <div style="flex: 1; margin: 0 15px; padding: 20px; background: #f0f8f0; border-radius: 15px;">
+                    <h3>💸 경제적 요인</h3>
+                    <p>• 반려동물 지출 증가</p>
+                    <p>• 구독 경제 확산</p>
+                    <p>• 모바일 결제 보편화</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 비즈니스 모델 -->
+        <div class="slide">
+            <h2>💰 다층적 수익 모델</h2>
+            
+            <div class="revenue-model">
+                <div class="revenue-stream">
+                    <div class="revenue-percentage">65%</div>
+                    <h3>구독 수익</h3>
+                    <p><strong>Free:</strong> 기본 품종, 광고 포함</p>
+                    <p><strong>Basic ($4.99):</strong> 8개 품종, 광고 제거</p>
+                    <p><strong>Premium ($9.99):</strong> 20개 품종, 고급 AI</p>
+                    <p><strong>Elite ($19.99):</strong> 50+ 품종, AR/VR</p>
+                </div>
+                
+                <div class="revenue-stream">
+                    <div class="revenue-percentage">20%</div>
+                    <h3>인앱 구매</h3>
+                    <p><strong>가챠 시스템:</strong> 희귀 아이템 랜덤 획득</p>
+                    <p><strong>직접 구매:</strong> 의상, 장난감, 부스터</p>
+                    <p><strong>홈 꾸미기:</strong> 집 확장, 가구, 데코</p>
+                </div>
+                
+                <div class="revenue-stream">
+                    <div class="revenue-percentage">10%</div>
+                    <h3>NFT 거래</h3>
+                    <p><strong>한정판 펫:</strong> 최초 1,000마리 발행</p>
+                    <p><strong>완성된 펫:</strong> 훈련 완료 펫 NFT화</p>
+                    <p><strong>거래 수수료:</strong> 7.5% 마켓플레이스 수수료</p>
+                </div>
+                
+                <div class="revenue-stream">
+                    <div class="revenue-percentage">5%</div>
+                    <h3>B2B 라이선스</h3>
+                    <p><strong>교육:</strong> 동물 생태 교육 프로그램</p>
+                    <p><strong>의료:</strong> 치매 예방, 심리 치료</p>
+                    <p><strong>메타버스:</strong> API 제공, 캐릭터 라이선스</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎯 혁신적 수익모델의 차별화 포인트</h3>
+                <p><strong>1. AI 기술의 직접 수익화 (40%):</strong> LLM과 T2M AI 사용량 기반 과금</p>
+                <p><strong>2. 감정적 몰입도 극대화:</strong> 성장 투자, 컬렉션 욕구, 창조의 즐거움</p>
+                <p><strong>3. 사용자 참여형 경제:</strong> P2P 거래, 창조적 가치, 네트워크 효과</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Gross Margin</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">19.5</div>
+                    <div class="stat-label">LTV/CAC 비율</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$8</div>
+                    <div class="stat-label">고객 획득 비용</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$156</div>
+                    <div class="stat-label">고객 평생 가치</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 재무 전망 -->
+        <div class="slide">
+            <h2>📊 5년 성장 로드맵 & 재무 전망</h2>
+            
+            <div class="financial-projections">
+                <div class="year-projection">
+                    <div class="year">2025</div>
+                    <div class="revenue">$2.2M</div>
+                    <div class="users">100K 사용자</div>
+                    <p>한국 정식 출시</p>
+                    <p>프로토타입 → 상용화</p>
+                </div>
+                <div class="year-projection">
+                    <div class="year">2026</div>
+                    <div class="revenue">$14.4M</div>
+                    <div class="users">500K 사용자</div>
+                    <p>일본 진출, NFT 출시</p>
+                    <p>B2B 파일럿 시작</p>
+                </div>
+                <div class="year-projection">
+                    <div class="year">2027</div>
+                    <div class="revenue">$54M</div>
+                    <div class="users">1.5M 사용자</div>
+                    <p>미국/유럽 확장</p>
+                    <p>글로벌 진출 완료</p>
+                </div>
+                <div class="year-projection">
+                    <div class="year">2028</div>
+                    <div class="revenue">$126M</div>
+                    <div class="users">3M 사용자</div>
+                    <p>AR/VR 확장</p>
+                    <p>메타버스 통합</p>
+                </div>
+                <div class="year-projection">
+                    <div class="year">2029</div>
+                    <div class="revenue">$252M</div>
+                    <div class="users">5M 사용자</div>
+                    <p>IPO 준비</p>
+                    <p>유니콘 달성</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎯 핵심 성공 지표 (Unit Economics)</h3>
+                <p><strong>CAC (고객 획득 비용):</strong> $8 → $6 (마케팅 최적화로 지속 감소)</p>
+                <p><strong>LTV (고객 평생 가치):</strong> $156 → $200 (평균 13개월 → 16개월 유지)</p>
+                <p><strong>월 이탈률:</strong> 4.5% (업계 평균 8% 대비 우수한 유지율)</p>
+                <p><strong>수익성:</strong> Break-even 25,000 구독자 (출시 후 8개월), Operating Margin 35% (2년 후)</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                <div style="flex: 1; margin: 0 15px; padding: 25px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 15px;">
+                    <h3>💎 보수적 Exit (2028)</h3>
+                    <p><strong>밸류에이션:</strong> $500M</p>
+                    <p><strong>투자수익률:</strong> 40배 (4,000%)</p>
+                    <p><strong>매출배수:</strong> 4배</p>
+                </div>
+                <div style="flex: 1; margin: 0 15px; padding: 25px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border-radius: 15px;">
+                    <h3>🚀 낙관적 Exit (2029)</h3>
+                    <p><strong>밸류에이션:</strong> $1.5B</p>
+                    <p><strong>투자수익률:</strong> 120배 (12,000%)</p>
+                    <p><strong>매출배수:</strong> 6배</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 현재 성과 & 검증 -->
+        <div class="slide">
+            <h2>🏆 현재 성과 & 시장 검증</h2>
+            
+            <div style="display: flex; justify-content: space-between; margin: 40px 0;">
+                <div style="flex: 1; margin: 0 20px; padding: 30px; background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; border-radius: 20px; text-align: center;">
+                    <h3>✅ 프로토타입 완성</h3>
+                    <div style="font-size: 2em; margin: 15px 0;">100명</div>
+                    <p>베타 테스터 완료</p>
+                    <p>3개월 내 시장 출시</p>
+                </div>
+                <div style="flex: 1; margin: 0 20px; padding: 30px; background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; border-radius: 20px; text-align: center;">
+                    <h3>📊 사용자 만족도</h3>
+                    <div style="font-size: 2em; margin: 15px 0;">4.6/5.0</div>
+                    <p>재방문율: 72% (D7)</p>
+                    <p>세션시간: 25분 (업계 대비 67%↑)</p>
+                </div>
+                <div style="flex: 1; margin: 0 20px; padding: 30px; background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); color: white; border-radius: 20px; text-align: center;">
+                    <h3>📰 언론/업계 관심</h3>
+                    <div style="font-size: 1.5em; margin: 15px 0;">3곳</div>
+                    <p>테크 미디어 주요 기사</p>
+                    <p>AI 컨퍼런스 발표 초청</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">5건</div>
+                    <div class="stat-label">특허 출원 준비</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50,000+</div>
+                    <div class="stat-label">동물 모션 데이터</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1년+</div>
+                    <div class="stat-label">T2M AI R&D</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15명</div>
+                    <div class="stat-label">검증된 팀 구성</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🗨️ 베타 사용자 피드백</h3>
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <div style="flex: 1; margin: 0 10px; padding: 15px; background: white; border-radius: 10px; border-left: 4px solid #00b894;">
+                        <p><em>"정말 살아있는 강아지 같아요! 대화가 너무 자연스러워서 깜짝 놀랐어요."</em></p>
+                        <p><strong>- 베타 사용자 김○○</strong></p>
+                    </div>
+                    <div style="flex: 1; margin: 0 10px; padding: 15px; background: white; border-radius: 10px; border-left: 4px solid #6c5ce7;">
+                        <p><em>"이렇게 똑똑한 AI 펫은 처음이에요. 제 기분을 정말 잘 알아주네요."</em></p>
+                        <p><strong>- 게임 리뷰어 이○○</strong></p>
+                    </div>
+                    <div style="flex: 1; margin: 0 10px; padding: 15px; background: white; border-radius: 10px; border-left: 4px solid #fd79a8;">
+                        <p><em>"외로움이 많이 사라졌어요. 정말 반려동물을 키우는 기분입니다."</em></p>
+                        <p><strong>- 1인 가구 박○○</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 팀 소개 -->
+        <div class="slide">
+            <h2>👥 검증된 실행 팀</h2>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>🎯 사업 총괄 / CEO</h3>
+                    <p><strong>장유경</strong></p>
+                    <p>• AI/게임 개발 15년+ 경력</p>
+                    <p>• T2M AI 기술 개발 주도</p>
+                    <p>• 다수 성공 프로젝트 경험</p>
+                    <p>• 누적 매출 100억원+ 달성</p>
+                </div>
+                
+                <div class="team-member">
+                    <h3>⚡ Technology & Development</h3>
+                    <p><strong>CTO + AI/ML Team</strong></p>
+                    <p>• KAIST/POSTECH 출신 PhD</p>
+                    <p>• Google/Naver AI 연구소 경력</p>
+                    <p>• Unity/Unreal 10년+ 전문가</p>
+                    <p>• 실시간 렌더링 최적화 전문</p>
+                </div>
+                
+                <div class="team-member">
+                    <h3>🎨 Product & Design</h3>
+                    <p><strong>CPO + Game Design Team</strong></p>
+                    <p>• 모바일 게임 기획 8년+ 경력</p>
+                    <p>• 수억 다운로드 게임 기획</p>
+                    <p>• UX/UI 설계 전문성</p>
+                    <p>• 사용자 경험 최적화</p>
+                </div>
+                
+                <div class="team-member">
+                    <h3>🚀 Marketing & Growth</h3>
+                    <p><strong>CMO + Marketing Team</strong></p>
+                    <p>• 디지털 마케팅 10년+ 경력</p>
+                    <p>• K-게임 글로벌 성공 사례</p>
+                    <p>• 바이럴 마케팅 전문가</p>
+                    <p>• 커뮤니티 운영 경험</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎖️ Advisory Board</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div>
+                        <p><strong>AI 기술 자문</strong></p>
+                        <p>• 서울대 AI 연구소 교수</p>
+                        <p>• Naver Clova 전 연구책임자</p>
+                    </div>
+                    <div>
+                        <p><strong>비즈니스 자문</strong></p>
+                        <p>• 넷마블/엔씨소프트 전 임원</p>
+                        <p>• 한국벤처투자 심사역</p>
+                    </div>
+                    <div>
+                        <p><strong>법무/IP 자문</strong></p>
+                        <p>• 김앤장 IP 전문 변호사</p>
+                        <p>• WIPO 국제특허 전문가</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 투자 요청 -->
+        <div class="slide">
+            <h2>💎 투자 요청 & 자금 사용 계획</h2>
+            
+            <div class="investment-ask">
+                <div class="ask-amount">
+                    <h3>Series Seed</h3>
+                    <div class="ask-number">5억원</div>
+                    <p>지분: 협의</p>
+                    <p>밸류에이션: 50억원</p>
+                </div>
+                
+                <div class="ask-amount">
+                    <h3>목표 달성</h3>
+                    <div class="ask-number">8개월</div>
+                    <p>손익분기점</p>
+                    <p>25K 구독자</p>
+                </div>
+                
+                <div class="ask-amount">
+                    <h3>예상 수익률</h3>
+                    <div class="ask-number">40-120배</div>
+                    <p>2028-2029 Exit</p>
+                    <p>$0.5B-$1.5B</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 40px 0;">
+                <div>
+                    <h3>💰 자금 사용 계획</h3>
+                    <div style="margin: 20px 0;">
+                        <div style="background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); padding: 15px; border-radius: 10px; margin: 10px 0; color: white;">
+                            <strong>기술 개발 (40% - 2억원)</strong>
+                            <p>T2M AI 엔진 최적화, 50+ 품종 완성</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #00cec9 0%, #55a3ff 100%); padding: 15px; border-radius: 10px; margin: 10px 0; color: white;">
+                            <strong>마케팅 (30% - 1.5억원)</strong>
+                            <p>소셜 미디어 광고, 인플루언서 협업</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); padding: 15px; border-radius: 10px; margin: 10px 0; color: white;">
+                            <strong>팀 확충 (20% - 1억원)</strong>
+                            <p>AI 엔지니어 2명, 게임 디자이너 1명</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%); padding: 15px; border-radius: 10px; margin: 10px 0; color: white;">
+                            <strong>해외 진출 (10% - 0.5억원)</strong>
+                            <p>일본 현지화, 글로벌 결제 시스템</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>🎯 투자자 혜택</h3>
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; height: 100%;">
+                        <p><strong>✅ 명확한 시장:</strong> $850억 TAM, 검증된 니즈</p>
+                        <p><strong>✅ 독점 기술:</strong> 3-5년 경쟁 우위</p>
+                        <p><strong>✅ 검증된 팀:</strong> 15년+ 경력, 실행력 입증</p>
+                        <p><strong>✅ 수익성:</strong> 85% Gross Margin</p>
+                        <p><strong>✅ 확장성:</strong> 글로벌 진출 가능</p>
+                        <p><strong>✅ Exit 전략:</strong> IPO/M&A 명확</p>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; border-radius: 10px; text-align: center;">
+                            <strong>예상 ROI: 4,000% - 12,000%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 리스크 분석 & 대응 -->
+        <div class="slide">
+            <h2>⚠️ 리스크 분석 & 완화 전략</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0;">
+                <div>
+                    <h3>🔧 기술 리스크</h3>
+                    <div style="background: #ffe8e8; padding: 20px; border-radius: 15px; margin: 15px 0;">
+                        <p><strong>위험:</strong> AI 모델 성능 이슈, 서버 확장성</p>
+                        <p><strong>완화:</strong> 이미 프로토타입 검증 완료, 클라우드 기반 아키텍처</p>
+                        <p><strong>확률:</strong> 낮음 (프로토타입으로 기술 검증)</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>📊 시장 리스크</h3>
+                    <div style="background: #fff4e8; padding: 20px; border-radius: 15px; margin: 15px 0;">
+                        <p><strong>위험:</strong> 시장 수요 예측 오차, 경쟁 심화</p>
+                        <p><strong>완화:</strong> 명확한 타겟층 존재, 2-4년 기술 독점권</p>
+                        <p><strong>확률:</strong> 낮음 (베타 검증으로 수요 확인)</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>🏆 경쟁 리스크</h3>
+                    <div style="background: #e8f4ff; padding: 20px; border-radius: 15px; margin: 15px 0;">
+                        <p><strong>위험:</strong> 빅테크 진입, 모방 제품 등장</p>
+                        <p><strong>완화:</strong> 특허 보호, 높은 진입장벽, 선점 효과</p>
+                        <p><strong>확률:</strong> 중간 (틈새시장으로 우선순위 낮음)</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>💼 실행 리스크</h3>
+                    <div style="background: #f0f8f0; padding: 20px; border-radius: 15px; margin: 15px 0;">
+                        <p><strong>위험:</strong> 팀 확장, 자금 소진, 출시 지연</p>
+                        <p><strong>완화:</strong> 검증된 팀, 단계별 자금 계획, 3개월 내 출시</p>
+                        <p><strong>확률:</strong> 낮음 (이미 준비된 실행 계획)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🛡️ 종합 리스크 평가: 낮음 (투자 적합)</h3>
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                    <div style="flex: 1; margin: 0 10px; text-align: center;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #00b894; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.5em;">✓</div>
+                        <p><strong>기술 검증 완료</strong></p>
+                        <p>프로토타입 성공</p>
+                    </div>
+                    <div style="flex: 1; margin: 0 10px; text-align: center;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #6c5ce7; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.5em;">⚡</div>
+                        <p><strong>독점적 우위</strong></p>
+                        <p>2-4년 진입 장벽</p>
+                    </div>
+                    <div style="flex: 1; margin: 0 10px; text-align: center;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #fd79a8; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.5em;">👥</div>
+                        <p><strong>검증된 팀</strong></p>
+                        <p>15년+ 경력진</p>
+                    </div>
+                    <div style="flex: 1; margin: 0 10px; text-align: center;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #fdcb6e; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.5em;">📈</div>
+                        <p><strong>명확한 시장</strong></p>
+                        <p>검증된 수요</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Call to Action -->
+        <div class="slide hero-slide">
+            <h1>🚀 함께 만들어갈 미래</h1>
+            <p class="hero-subtitle">PetPal AI는 단순한 게임이 아닙니다</p>
+            <p class="hero-subtitle">외로운 현대인들에게 진정한 디지털 동반자를 선사하는</p>
+            <p class="hero-subtitle"><strong>새로운 라이프스타일 플랫폼</strong>입니다</p>
+            
+            <div class="hero-metrics" style="margin-top: 50px;">
+                <div class="metric-card">
+                    <div class="metric-number">5억원</div>
+                    <div class="metric-label">Series Seed 투자 요청</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">40-120배</div>
+                    <div class="metric-label">예상 투자 수익률</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">3-5년</div>
+                    <div class="metric-label">독점 기술 우위</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 60px; padding: 30px; background: rgba(255,255,255,0.2); border-radius: 20px; backdrop-filter: blur(10px);">
+                <h2 style="color: white; margin-bottom: 20px;">💌 Contact Information</h2>
+                <p style="font-size: 1.3em;"><strong>㈜엑스레이트 (NTEKSYSTEMS Inc.)</strong></p>
+                <p style="font-size: 1.2em;">대표이사: 장유경</p>
+                <p style="font-size: 1.1em;">📧 contact@xreate.com | 📱 +82-10-XXXX-XXXX</p>
+                <p style="font-size: 1.1em;">🏢 인천광역시 (정부 지원사업 대상 지역)</p>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <p style="font-size: 1.5em; font-weight: bold; color: #fff;">
+                    AI와 💖 함께하는 Digital Art의 혁신적 만남
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="prevSlide()">◀ 이전</button>
+        <button class="nav-btn" onclick="nextSlide()">다음 ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // 키보드 네비게이션
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+        
+        // 자동 슬라이드 애니메이션 효과
+        document.querySelectorAll('.stat-item, .tech-card, .team-member, .metric-card').forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+            el.style.animation = 'fadeInUp 0.6s ease forwards';
+        });
+    </script>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stat-item, .tech-card, .team-member, .metric-card {
+            opacity: 0;
+        }
+    </style>
+</body>
+</html>

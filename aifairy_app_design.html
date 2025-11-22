@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiFairy - AI 컴패니언 요정</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 25px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .time {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .battery {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        /* 온보딩 화면 */
+        .onboarding {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            text-align: center;
+            padding: 60px 30px;
+            color: #333;
+        }
+
+        .fairy-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .onboarding h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .onboarding p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 요정 선택 화면 */
+        .fairy-selection {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+        }
+
+        .selection-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .selection-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .selection-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .fairy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .fairy-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .fairy-card.selected {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .fairy-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .forest { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+        .celestial { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .hearth { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .mischief { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+        .oracle { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .romantic { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+
+        .fairy-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .fairy-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        /* 메인 채팅 화면 */
+        .chat-screen {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .chat-header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .fairy-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .fairy-status {
+            flex: 1;
+        }
+
+        .fairy-status h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .fairy-status p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.1);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #667eea;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message-bubble {
+            background: rgba(255,255,255,0.9);
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 100%;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        .chat-input {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .input-container {
+            flex: 1;
+            background: rgba(0,0,0,0.05);
+            border-radius: 25px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* 하단 네비게이션 */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* 설정 화면 */
+        .settings {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+        }
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .settings-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .settings-section {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .settings-item {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .settings-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .settings-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .settings-arrow {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+        }
+
+        /* 반응형 */
+        @media (max-width: 400px) {
+            .phone-container {
+                width: 100%;
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
+                padding: 0;
+            }
+            
+            .phone-screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone-screen">
+            <!-- 온보딩 화면 -->
+            <div class="screen active" id="onboarding">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="battery">100% 🔋</div>
+                </div>
+                <div class="onboarding">
+                    <div class="fairy-logo">🧚‍♀️</div>
+                    <h1>AiFairy</h1>
+                    <p>당신만의 특별한 요정과 함께<br>일상의 마법을 경험해보세요</p>
+                    <button class="primary-btn" onclick="showScreen('fairy-selection')">
+                        시작하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 요정 선택 화면 -->
+            <div class="screen" id="fairy-selection">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="battery">100% 🔋</div>
+                </div>
+                <div class="fairy-selection">
+                    <div class="selection-header">
+                        <h2>요정을 선택해주세요</h2>
+                        <p>각 요정은 고유한 성격과 특별한 능력을 가지고 있어요</p>
+                    </div>
+                    <div class="fairy-grid">
+                        <div class="fairy-card" onclick="selectFairy(this)">
+                            <div class="fairy-avatar forest">🌿</div>
+                            <div class="fairy-name">숲의 수호자</div>
+                            <div class="fairy-desc">자연을 사랑하는 현명한 조언자</div>
+                        </div>
+                        <div class="fairy-card selected" onclick="selectFairy(this)">
+                            <div class="fairy-avatar celestial">✨</div>
+                            <div class="fairy-name">하늘의 뮤즈</div>
+                            <div class="fairy-desc">창조적 영감을 주는 예술가</div>
+                        </div>
+                        <div class="fairy-card" onclick="selectFairy(this)">
+                            <div class="fairy-avatar hearth">🏠</div>
+                            <div class="fairy-name">가정의 지킴이</div>
+                            <div class="fairy-desc">따뜻하고 보살피는 부모형</div>
+                        </div>
+                        <div class="fairy-card" onclick="selectFairy(this)">
+                            <div class="fairy-avatar mischief">🌈</div>
+                            <div class="fairy-name">장난꾸러기</div>
+                            <div class="fairy-desc">유쾌하고 에너지 넘치는 친구</div>
+                        </div>
+                        <div class="fairy-card" onclick="selectFairy(this)">
+                            <div class="fairy-avatar oracle">🔮</div>
+                            <div class="fairy-name">예언의 날개</div>
+                            <div class="fairy-desc">신비롭고 지혜로운 예견자</div>
+                        </div>
+                        <div class="fairy-card" onclick="selectFairy(this)">
+                            <div class="fairy-avatar romantic">💕</div>
+                            <div class="fairy-name">로맨틱 요정</div>
+                            <div class="fairy-desc">사랑스럽고 로맨틱한 연인</div>
+                        </div>
+                    </div>
+                    <button class="primary-btn" onclick="showScreen('chat')">
+                        대화 시작하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 메인 채팅 화면 -->
+            <div class="screen" id="chat">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="battery">100% 🔋</div>
+                </div>
+                <div class="chat-header">
+                    <div class="fairy-profile">✨</div>
+                    <div class="fairy-status">
+                        <h3>하늘의 뮤즈</h3>
+                        <p>온라인 • 영감을 기다리고 있어요</p>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="action-btn">🎵</button>
+                        <button class="action-btn">📷</button>
+                        <button class="action-btn">⚙️</button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages">
+                    <div class="message">
+                        <div class="message-avatar">✨</div>
+                        <div class="message-bubble">
+                            <div class="message-text">안녕! 나는 하늘의 뮤즈야 ✨<br>오늘은 어떤 창작적인 영감이 필요해?</div>
+                            <div class="message-time">오후 2:31</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message user">
+                        <div class="message-avatar">👤</div>
+                        <div class="message-bubble">
+                            <div class="message-text">안녕! 소설을 쓰고 있는데 아이디어가 막혔어</div>
+                            <div class="message-time">오후 2:32</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message">
+                        <div class="message-avatar">✨</div>
+                        <div class="message-bubble">
+                            <div class="message-text">오, 흥미로워! 🌟<br>어떤 장르의 소설이야? 그리고 지금까지 어떤 이야기를 써왔는지 조금 들려줄래?</div>
+                            <div class="message-time">오후 2:32</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <div class="input-container">
+                        <input type="text" class="message-input" placeholder="메시지를 입력하세요..." />
+                        <span style="font-size: 16px; cursor: pointer;">🎤</span>
+                        <span style="font-size: 16px; cursor: pointer;">📎</span>
+                    </div>
+                    <button class="send-btn">➤</button>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item active" onclick="showScreen('chat')">
+                        <div class="nav-icon">💬</div>
+                        <div class="nav-label">채팅</div>
+                    </div>
+                    <div class="nav-item" onclick="showScreen('fairy-selection')">
+                        <div class="nav-icon">🧚‍♀️</div>
+                        <div class="nav-label">요정</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📚</div>
+                        <div class="nav-label">스토리</div>
+                    </div>
+                    <div class="nav-item" onclick="showScreen('settings')">
+                        <div class="nav-icon">⚙️</div>
+                        <div class="nav-label">설정</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 설정 화면 -->
+            <div class="screen" id="settings">
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="battery">100% 🔋</div>
+                </div>
+                <div class="settings">
+                    <div class="settings-header">
+                        <h2>설정</h2>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">👤</div>
+                                <div class="settings-text">프로필 관리</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🧚‍♀️</div>
+                                <div class="settings-text">요정 꾸미기</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🎵</div>
+                                <div class="settings-text">음성 설정</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🔔</div>
+                                <div class="settings-text">알림 설정</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🔒</div>
+                                <div class="settings-text">개인정보 보호</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">💳</div>
+                                <div class="settings-text">구독 관리</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">❓</div>
+                                <div class="settings-text">도움말</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">📞</div>
+                                <div class="settings-text">고객 지원</div>
+                            </div>
+                            <div class="settings-arrow">›</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item" onclick="showScreen('chat')">
+                        <div class="nav-icon">💬</div>
+                        <div class="nav-label">채팅</div>
+                    </div>
+                    <div class="nav-item" onclick="showScreen('fairy-selection')">
+                        <div class="nav-icon">🧚‍♀️</div>
+                        <div class="nav-label">요정</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📚</div>
+                        <div class="nav-label">스토리</div>
+                    </div>
+                    <div class="nav-item active" onclick="showScreen('settings')">
+                        <div class="nav-icon">⚙️</div>
+                        <div class="nav-label">설정</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 네비게이션 버튼 -->
+    <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showScreen('onboarding')">온보딩</button>
+        <button class="nav-btn" onclick="showScreen('fairy-selection')">요정선택</button>
+        <button class="nav-btn" onclick="showScreen('chat')">채팅</button>
+        <button class="nav-btn" onclick="showScreen('settings')">설정</button>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // 모든 화면 숨기기
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // 선택된 화면 표시
+            document.getElementById(screenId).classList.add('active');
+            
+            // 네비게이션 버튼 상태 업데이트
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // 해당 화면의 네비게이션 버튼 활성화
+            const btnTexts = {
+                'onboarding': '온보딩',
+                'fairy-selection': '요정선택', 
+                'chat': '채팅',
+                'settings': '설정'
+            };
+            
+            navBtns.forEach(btn => {
+                if (btn.textContent === btnTexts[screenId]) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 하단 네비게이션 상태 업데이트
+            const bottomNavItems = document.querySelectorAll('.nav-item');
+            bottomNavItems.forEach(item => item.classList.remove('active'));
+            
+            if (screenId === 'chat') {
+                bottomNavItems[0].classList.add('active');
+            } else if (screenId === 'fairy-selection') {
+                bottomNavItems[1].classList.add('active');
+            } else if (screenId === 'settings') {
+                bottomNavItems[3].classList.add('active');
+            }
+        }
+
+        function selectFairy(card) {
+            // 모든 카드에서 selected 클래스 제거
+            const cards = document.querySelectorAll('.fairy-card');
+            cards.forEach(c => c.classList.remove('selected'));
+            
+            // 클릭된 카드에 selected 클래스 추가
+            card.classList.add('selected');
+        }
+
+        // 메시지 입력 기능
+        const messageInput = document.querySelector('.message-input');
+        const sendBtn = document.querySelector('.send-btn');
+        const chatMessages = document.querySelector('.chat-messages');
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            // 사용자 메시지 추가
+            const userMessage = createMessage(text, true);
+            chatMessages.appendChild(userMessage);
+            
+            messageInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 요정 응답 시뮬레이션
+            setTimeout(() => {
+                const responses = [
+                    "정말 흥미로운 이야기네! 더 자세히 들려줄래? ✨",
+                    "그럼 이런 건 어때? 주인공이 예상치 못한 능력을 발견하는 장면은? 🌟",
+                    "창작에는 때로 휴식도 필요해. 잠시 다른 것에 집중해보는 것도 좋아 🦋",
+                    "네 이야기에서 가장 중요한 메시지는 뭐야? 그것부터 다시 생각해보자 💫"
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                const aiMessage = createMessage(randomResponse, false);
+                chatMessages.appendChild(aiMessage);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        function createMessage(text, isUser) {
+            const message = document.createElement('div');
+            message.className = `message ${isUser ? 'user' : ''}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = isUser ? '👤' : '✨';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            messageText.textContent = text;
+            
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString('ko-KR', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            
+            bubble.appendChild(messageText);
+            bubble.appendChild(time);
+            message.appendChild(avatar);
+            message.appendChild(bubble);
+            
+            return message;
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 초기 화면 설정
+        showScreen('onboarding');
+    </script>
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashless Payment Parking Solution - Revolutionizing Parking Experience | NTEKSYSTEMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        /* Product Hero Section */
+        .product-hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-hero-content {
+            flex: 1;
+            padding-right: 2rem;
+        }
+
+        .product-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .product-hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .product-hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .product-hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .product-hero-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .product-hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #2563eb;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+        }
+
+        .btn-large {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .product-hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-mockup {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .mockup-screen {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: #333;
+        }
+
+        .parking-interface {
+            text-align: center;
+        }
+
+        .interface-step {
+            background: #f8fafc;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1e293b;
+        }
+
+        /* Target Market Section */
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .target-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .target-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .target-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .target-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .target-card p {
+            margin-bottom: 1.5rem;
+            color: #64748b;
+        }
+
+        .target-card ul {
+            list-style: none;
+        }
+
+        .target-card li {
+            padding: 0.5rem 0;
+            color: #64748b;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .target-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        /* System Section */
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .system-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .system-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .quest-list {
+            list-style: none;
+        }
+
+        .quest-list li {
+            padding: 0.7rem 0;
+            color: #64748b;
+            position: relative;
+            padding-left: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .quest-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #2563eb;
+        }
+
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.featured {
+            border: 3px solid #2563eb;
+            transform: scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            padding: 0.7rem 0;
+            color: #64748b;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Success Stories */
+        .success-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-video {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .success-content {
+            padding: 2rem;
+        }
+
+        .success-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .success-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .success-stats span {
+            background: #f0f9ff;
+            color: #0369a1;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-hero-title {
+                font-size: 2.5rem;
+            }
+
+            .product-hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .product-hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .target-grid,
+            .features-grid,
+            .system-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="main-header">
+        <div class="container nav-container">
+            <div class="logo">NTEKSYSTEMS</div>
+        </div>
+    </header>
+
+    <!-- Product Hero Section -->
+    <section class="product-hero">
+        <div class="container">
+            <div class="product-hero-content">
+                <div class="product-badge">Smart Parking Solution</div>
+                <h1 class="product-hero-title">Cashless Payment Parking Solution</h1>
+                <p class="product-hero-subtitle">Revolutionizing Parking Experience</p>
+                <p class="product-hero-description">
+                    Transform your parking facility with our cutting-edge cashless payment system. 
+                    Eliminate manual processes, reduce operational costs, and provide customers with 
+                    a seamless, contactless parking experience powered by ANPR technology and digital payments.
+                </p>
+                <div class="product-hero-features">
+                    <div class="feature-item">🚗 ANPR Camera Technology</div>
+                    <div class="feature-item">📱 GCash & Maya Integration</div>
+                    <div class="feature-item">🎯 QR Code System</div>
+                    <div class="feature-item">📊 BIR Compliant Reporting</div>
+                </div>
+                <div class="product-hero-cta">
+                    <a href="#pricing" class="btn btn-primary">Request Free Demo</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+            <div class="product-hero-visual">
+                <div class="product-mockup">
+                    <div class="mockup-screen">
+                        <div class="parking-interface">
+                            <h3>🚗 Smart Parking Flow</h3>
+                            <div class="interface-step">
+                                <strong>1. Entry:</strong> ANPR Camera / QR Ticket
+                            </div>
+                            <div class="interface-step">
+                                <strong>2. Payment:</strong> Kiosk / Mobile App
+                            </div>
+                            <div class="interface-step">
+                                <strong>3. Exit:</strong> Automatic Gate Opening
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Market Section -->
+    <section id="target-market" class="section target-market-section">
+        <div class="container">
+            <h2 class="section-title">Target Markets</h2>
+            <div class="target-grid">
+                <div class="target-card">
+                    <div class="target-icon">🏢</div>
+                    <h3>Commercial Buildings</h3>
+                    <p>Office buildings and business centers seeking efficient parking management</p>
+                    <ul>
+                        <li>Reduced labor costs</li>
+                        <li>Enhanced security</li>
+                        <li>Professional image</li>
+                        <li>Scalable solution</li>
+                    </ul>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">🏪</div>
+                    <h3>Shopping Malls</h3>
+                    <p>Retail complexes looking to improve customer parking experience</p>
+                    <ul>
+                        <li>Faster customer turnover</li>
+                        <li>Contactless payments</li>
+                        <li>Real-time monitoring</li>
+                        <li>Revenue optimization</li>
+                    </ul>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">🏥</div>
+                    <h3>Hospitals & Healthcare</h3>
+                    <p>Medical facilities requiring efficient patient and visitor parking</p>
+                    <ul>
+                        <li>Hygiene-friendly contactless system</li>
+                        <li>Emergency vehicle priority</li>
+                        <li>Visitor management</li>
+                        <li>Accessibility features</li>
+                    </ul>
+                </div>
+                <div class="target-card">
+                    <div class="target-icon">🏨</div>
+                    <h3>Hotels & Resorts</h3>
+                    <p>Hospitality venues enhancing guest parking convenience</p>
+                    <ul>
+                        <li>Guest satisfaction improvement</li>
+                        <li>Valet integration</li>
+                        <li>Multi-language support</li>
+                        <li>Premium service offerings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="section features-section">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📷</div>
+                    <h3>ANPR Camera Integration</h3>
+                    <p>Automatic Number Plate Recognition for seamless entry and exit without physical tickets</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Digital Payment Gateway</h3>
+                    <p>Accept payments via GCash, Maya, credit cards, and traditional cash/coins</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>QR Code Technology</h3>
+                    <p>Alternative ticketing system with QR codes for entry, payment, and exit validation</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Self-Service Kiosks</h3>
+                    <p>User-friendly payment terminals with multilingual interface and receipt printing</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>BIR Compliant Reporting</h3>
+                    <p>Automated X-Reading and Z-Reading reports for Philippine tax compliance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍💼</div>
+                    <h3>Cashier Backup System</h3>
+                    <p>Manual override options with trained personnel for system maintenance or assistance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service System Section -->
+    <section id="service-system" class="section game-system-section">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <div class="system-grid">
+                <div class="system-card">
+                    <div class="system-icon">🚪</div>
+                    <h3>Entry Management</h3>
+                    <ul class="quest-list">
+                        <li>ANPR camera vehicle detection</li>
+                        <li>QR ticket dispensing option</li>
+                        <li>Automatic barrier control</li>
+                        <li>Real-time space availability</li>
+                        <li>Entry timestamp recording</li>
+                    </ul>
+                </div>
+                <div class="system-card">
+                    <div class="system-icon">💰</div>
+                    <h3>Payment Processing</h3>
+                    <ul class="quest-list">
+                        <li>Multi-payment gateway integration</li>
+                        <li>Real-time rate calculation</li>
+                        <li>Receipt generation (QR/Physical)</li>
+                        <li>Payment verification system</li>
+                        <li>Refund and adjustment handling</li>
+                    </ul>
+                </div>
+                <div class="system-card">
+                    <div class="system-icon">📈</div>
+                    <h3>Management Dashboard</h3>
+                    <ul class="quest-list">
+                        <li>Live parking occupancy monitoring</li>
+                        <li>Revenue tracking and analytics</li>
+                        <li>BIR X-Reading and Z-Reading</li>
+                        <li>System health monitoring</li>
+                        <li>Remote configuration management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section pricing-section">
+        <div class="container">
+            <h2 class="section-title">Pricing Plans</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter Package</h3>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Basic ANPR system (up to 50 spaces)</li>
+                        <li>Single payment kiosk</li>
+                        <li>GCash/Maya integration</li>
+                        <li>Basic reporting dashboard</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Get Quote</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional Package</h3>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Advanced ANPR system (up to 200 spaces)</li>
+                        <li>Multiple payment kiosks</li>
+                        <li>Full digital payment gateway</li>
+                        <li>BIR compliant reporting</li>
+                        <li>Mobile app integration</li>
+                        <li>24/7 phone support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Get Quote</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise Package</h3>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Unlimited parking spaces</li>
+                        <li>Multi-site management</li>
+                        <li>Custom integration options</li>
+                        <li>Dedicated account manager</li>
+                        <li>On-site training and support</li>
+                        <li>SLA guarantee</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="success-stories" class="section success-section">
+        <div class="container">
+            <h2 class="section-title">Success Stories</h2>
+            <div class="success-grid">
+                <div class="success-card">
+                    <div class="success-video">
+                        <div class="video-placeholder">🏢</div>
+                    </div>
+                    <div class="success-content">
+                        <h3>Makati CBD Office Complex - Operational Efficiency</h3>
+                        <p>"After implementing NTEKSYSTEMS' cashless parking solution, we reduced operational costs by 35% and eliminated cash handling risks. Customer complaints decreased by 80% with the contactless system."</p>
+                        <div class="success-stats">
+                            <span>Costs 35% ↓</span>
+                            <span>Complaints 80% ↓</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="success-card">
+                    <div class="success-video">
+                        <div class="video-placeholder">🏪</div>
+                    </div>
+                    <div class="success-content">
+                        <h3>SM Mall - Enhanced Customer Experience</h3>
+                        <p>"The ANPR technology and mobile payment integration improved customer satisfaction scores by 45%. Average parking transaction time reduced from 5 minutes to 30 seconds."</p>
+                        <div class="success-stats">
+                            <span>Satisfaction 45% ↑</span>
+                            <span>Transaction time 90% ↓</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Parking?</h2>
+                <p>Join the cashless revolution and provide your customers with a world-class parking experience</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary btn-large">Schedule Free Demo</a>
+                    <a href="tel:+6327738-9162" class="btn btn-secondary btn-large">Call (02) 7738-9162</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact Information</h2>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                    <h3 style="margin-bottom: 1.5rem; color: #1e293b;">Get in Touch</h3>
+                    <p style="margin-bottom: 1rem;"><strong>Phone:</strong> (02) 7738-9162</p>
+                    <p style="margin-bottom: 1rem;"><strong>Email:</strong> nteksystemssales@gmail.com</p>
+                    <p style="margin-bottom: 1rem;"><strong>Website:</strong> nteksystems.com</p>
+                    <p style="color: #64748b;">Ready to upgrade your parking facility? Contact us today for a free consultation and demo of our cashless parking solution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">NTEKSYSTEMS</div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="footer-copy">© 2024 NTEKSYSTEMS Inc. All rights reserved.</div>
+        </div>
+    </footer>
+</body>
+</html>
